@@ -1,65 +1,134 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import Link from "next/link";
+import { motion, type Variants } from "framer-motion";
+
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
+type Feature = {
+  title: string;
+  description: string;
+};
+
+const features: Feature[] = [
+  {
+    title: "Problem Discovery",
+    description:
+      "Browse a curated catalog of high-quality, real-world problems—validated for feasibility, impact, and clarity.",
+  },
+  {
+    title: "Collaborative Solution Spaces",
+    description:
+      "Spin up a lightweight space around any problem and coordinate progress through external artifacts: repos, papers, datasets, prototypes.",
+  },
+  {
+    title: "Research Gap Intelligence",
+    description:
+      "See the gaps, suggested approaches, and supporting sources that make a problem actionable—without the noise.",
+  },
+];
+
+const EASE_OUT: [number, number, number, number] = [0.2, 0.8, 0.2, 1];
+
+const container: Variants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.06, delayChildren: 0.04 },
+  },
+};
+
+const item: Variants = {
+  hidden: { opacity: 0, y: 10 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.4, ease: EASE_OUT },
+  },
+};
+
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <motion.div variants={container} initial="hidden" animate="show">
+      <motion.section variants={item} className="pt-10 sm:pt-14 md:pt-20">
+        <div className="space-y-6">
+          <div className="space-y-3">
+            <p className="text-xs font-medium tracking-wide text-muted-foreground">
+              ProblemAtlas
+            </p>
+            <h1 className="text-balance text-4xl font-semibold tracking-tight leading-[1.08] sm:text-5xl md:text-6xl">
+              Discover problems that matter.
+            </h1>
+          </div>
+
+          <div className="max-w-2xl space-y-3">
+            <p className="text-pretty text-base sm:text-lg text-foreground/90 leading-relaxed">
+              A modern, research-grade platform for turning real-world gaps into
+              focused solution efforts.
+            </p>
+            <p className="text-pretty text-sm sm:text-base text-muted-foreground leading-relaxed">
+              Explore curated problems across AI/ML and Developer Tools. Express
+              interest, form a solution space, and collaborate through linked
+              artifacts—repositories, papers, datasets, and prototypes.
+            </p>
+          </div>
+
+          <motion.div
+            variants={item}
+            className="flex flex-col gap-3 sm:flex-row sm:items-center"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            <motion.div whileHover={{ y: -1 }} transition={{ duration: 0.15 }}>
+              <Button asChild size="lg" className="w-full sm:w-auto">
+                <Link href="/explore">Explore Problems</Link>
+              </Button>
+            </motion.div>
+
+            <motion.div whileHover={{ y: -1 }} transition={{ duration: 0.15 }}>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="w-full sm:w-auto"
+              >
+                <Link href="/spaces">View Solution Spaces</Link>
+              </Button>
+            </motion.div>
+          </motion.div>
         </div>
-      </main>
-    </div>
+      </motion.section>
+
+      <motion.div
+        variants={item}
+        className="mt-12 border-t border-border/60 pt-10 sm:mt-14 sm:pt-12"
+      >
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          {features.map((feature) => (
+            <motion.div
+              key={feature.title}
+              variants={item}
+              whileHover={{ y: -2 }}
+              transition={{ duration: 0.18, ease: EASE_OUT }}
+            >
+              <Card className="h-full">
+                <CardHeader className="space-y-2">
+                  <CardTitle className="text-[15px]">
+                    {feature.title}
+                  </CardTitle>
+                  <CardDescription className="leading-relaxed">
+                    {feature.description}
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+    </motion.div>
   );
 }
