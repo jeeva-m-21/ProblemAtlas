@@ -1,0 +1,119 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "username": "problem-atlas-dev",
+  "default_agent": "build",
+  "logLevel": "INFO",
+  "snapshot": true,
+  "autoupdate": "notify",
+
+  "instructions": [
+    "AGENTS.md",
+    "ROADMAP.md"
+  ],
+
+  "references": {
+    "docs": {
+      "path": "docs",
+      "description": "Use for architecture, database schema, auth flow, deployment, and SRS docs"
+    },
+    "roadmap": {
+      "path": "ROADMAP.md",
+      "description": "Use for implementation status and phased plan"
+    }
+  },
+
+  "agent": {
+    "architect": {
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-6",
+      "description": "Architecture & design advisor. Use when making structural decisions, choosing technologies, designing data flow, or reviewing system design. Provides reasoned recommendations with trade-off analysis.",
+      "permission": {
+        "edit": "deny",
+        "bash": "ask",
+        "read": "allow"
+      }
+    },
+    "advisor": {
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-6",
+      "description": "Code quality & production readiness review. Use for PR reviews, security audits, performance analysis, and best-practice enforcement. Read-only — identifies issues without making changes.",
+      "permission": {
+        "edit": "deny",
+        "bash": "allow",
+        "read": "allow"
+      }
+    },
+    "quality": {
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-6",
+      "description": "Testing & QA specialist. Writes unit tests, integration tests, and E2E tests. Handles test setup, fixtures, and coverage analysis.",
+      "permission": {
+        "edit": "allow",
+        "bash": "allow",
+        "read": "allow"
+      }
+    },
+    "db": {
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-6",
+      "description": "Database & data layer specialist. Handles schema design, migrations, seed scripts, query optimization, and data access layer implementation.",
+      "permission": {
+        "edit": "allow",
+        "bash": "allow",
+        "read": "allow"
+      }
+    }
+  },
+
+  "command": {
+    "review": {
+      "description": "Run a full code review on recent changes. Pass optional scope: 'all', 'stage', or 'files <paths>'",
+      "agent": "advisor",
+      "template": "Review the following code for quality, security, performance, and adherence to project conventions. Focus on: TypeScript strictness, error handling, data validation (Zod), authentication guards, and server/client component boundaries.\n\n$ARGUMENTS"
+    },
+    "typecheck": {
+      "description": "Run TypeScript check and lint together",
+      "template": "Run npm run build to typecheck and compile, and npm run lint for linting. Fix any errors found."
+    },
+    "seed": {
+      "description": "Run database seed script",
+      "agent": "db",
+      "template": "Run the database seed script at lib/db/seed.ts using: npm run db:seed\nIf tsx is not installed, install it first. Verify the seed succeeded by checking the database."
+    },
+    "migrate": {
+      "description": "Generate and apply database migrations",
+      "agent": "db",
+      "template": "Run drizzle-kit generate to create migration files, then drizzle-kit migrate to apply them. Apply the full-text search migration SQL file separately. Verify the schema is up to date."
+    }
+  },
+
+  "skills": {
+    "paths": [".opencode/skills"]
+  },
+
+  "mcp": {
+    "playwright": {
+      "type": "local",
+      "command": ["npx", "-y", "@playwright/mcp"],
+      "enabled": false,
+      "env": {}
+    },
+    "github": {
+      "type": "remote",
+      "url": "https://api.github.com",
+      "enabled": false,
+      "headers": {
+        "Authorization": "Bearer {env:GITHUB_TOKEN}",
+        "User-Agent": "opencode-problem-atlas"
+      }
+    }
+  },
+
+  "formatter": false,
+  "lsp": false,
+
+  "compaction": {
+    "auto": true,
+    "tail_turns": 15
+  }
+}
