@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { Search } from "lucide-react";
 
-import { mockSolutionSpaces, type SolutionSpace } from "@/data/mockSolutionSpaces";
+import { getSolutionSpaces } from "@/lib/data/spaces";
+import type { SolutionSpaceRecord as SolutionSpace } from "@/lib/data/spaces";
 import { SolutionSpaceCard } from "@/components/space/SolutionSpaceCard";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -101,7 +102,9 @@ export default async function SpacesPage({
   if (stage !== "all") params.set("stage", stage);
   if (sort !== "activity") params.set("sort", sort);
 
-  const filtered = mockSolutionSpaces
+  const allSpaces = await getSolutionSpaces();
+
+  const filtered = allSpaces
     .filter((s) => {
       if (stage !== "all" && deriveStage(s) !== stage) return false;
       if (!q) return true;
@@ -212,7 +215,7 @@ export default async function SpacesPage({
 
             <div className="flex items-center justify-between gap-4 border-t border-border/50 pt-3">
               <p className="text-xs text-muted-foreground">
-                Showing <span className="font-medium text-foreground/80">{filtered.length}</span> of {mockSolutionSpaces.length}
+                Showing <span className="font-medium text-foreground/80">{filtered.length}</span> of {allSpaces.length}
               </p>
               <p className="text-xs text-muted-foreground">
                 Tip: open a space to see tasks + artifacts.

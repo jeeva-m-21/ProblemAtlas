@@ -1,0 +1,13 @@
+{
+  "session_id": "2026-07-11-001",
+  "checkpoint_number": 0,
+  "status": "idle",
+  "goal": null,
+  "pipeline": null,
+  "git_head_hash": null,
+  "files_modified": [],
+  "last_agent": null,
+  "last_subtask": null,
+  "created_at": "2026-07-11T00:00:00Z",
+  "updated_at": "2026-07-11T00:00:00Z"
+}

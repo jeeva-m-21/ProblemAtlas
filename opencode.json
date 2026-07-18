@@ -8,67 +8,132 @@
 
   "instructions": [
     "AGENTS.md",
-    "ROADMAP.md"
+    "ROADMAP.md",
+    ".opencode/architecture/constraints.md"
   ],
 
   "references": {
     "docs": {
       "path": "docs",
-      "description": "Use for architecture, database schema, auth flow, deployment, and SRS docs"
+      "description": "Architecture docs, database schema, auth flow, deployment, SRS docs"
     },
-    "roadmap": {
-      "path": "ROADMAP.md",
-      "description": "Use for implementation status and phased plan"
+    "blueprint": {
+      "path": "docs/opencode/BLUEPRINT.md",
+      "description": "Complete OpenCode autonomous engineering system blueprint"
+    },
+    "memory": {
+      "path": ".opencode/memory",
+      "description": "Persistent project memory — load before any substantial task"
+    },
+    "summaries": {
+      "path": ".opencode/summaries",
+      "description": "Compressed repository views for context-efficient retrieval"
     }
   },
 
   "agent": {
+    "orchestrator": {
+      "mode": "primary",
+      "model": "deepseek-zen",
+      "description": "MASTER CONTROLLER — session lifecycle, token governance, checkpoint/resume, agent dispatch, budget enforcement, productivity optimization. ALWAYS invoked first. Reads state, resumes if interrupted, dispatches pipeline. The brain.",
+      "permission": { "edit": "allow", "bash": "allow", "read": "allow", "glob": "allow", "grep": "allow", "list": "allow", "task": "allow", "todowrite": "allow", "webfetch": "allow", "websearch": "allow", "skill": "allow", "question": "allow" }
+    },
+    "router": {
+      "mode": "subagent",
+      "model": "deepseek-zen",
+      "description": "Task classifier and model router. Called by the Orchestrator for complexity scoring. Determines pipeline path.",
+      "permission": { "edit": "deny", "bash": "allow", "read": "allow" }
+    },
+    "pm": {
+      "mode": "subagent",
+      "model": "deepseek-v4-pro",
+      "description": "Project Manager — goal intake, scope definition, prioritization, risk identification. For complex tasks only.",
+      "permission": { "edit": "deny", "bash": "allow", "read": "allow" }
+    },
     "architect": {
       "mode": "subagent",
-      "model": "anthropic/claude-sonnet-4-6",
-      "description": "Architecture & design advisor. Use when making structural decisions, choosing technologies, designing data flow, or reviewing system design. Provides reasoned recommendations with trade-off analysis.",
-      "permission": {
-        "edit": "deny",
-        "bash": "ask",
-        "read": "allow"
-      }
+      "model": "deepseek-v4-pro",
+      "description": "System architect — design decisions, API design, database schema, module boundaries. Read-only advisory.",
+      "permission": { "edit": "deny", "bash": "ask", "read": "allow" }
     },
-    "advisor": {
+    "planner": {
       "mode": "subagent",
-      "model": "anthropic/claude-sonnet-4-6",
-      "description": "Code quality & production readiness review. Use for PR reviews, security audits, performance analysis, and best-practice enforcement. Read-only — identifies issues without making changes.",
-      "permission": {
-        "edit": "deny",
-        "bash": "allow",
-        "read": "allow"
-      }
+      "model": "deepseek-zen",
+      "description": "Task planner — decomposes goals into ordered subtasks with dependencies and verification steps.",
+      "permission": { "edit": "allow", "bash": "allow", "read": "allow" }
     },
-    "quality": {
+    "retriever": {
       "mode": "subagent",
-      "model": "anthropic/claude-sonnet-4-6",
-      "description": "Testing & QA specialist. Writes unit tests, integration tests, and E2E tests. Handles test setup, fixtures, and coverage analysis.",
-      "permission": {
-        "edit": "allow",
-        "bash": "allow",
-        "read": "allow"
-      }
+      "model": "deepseek-zen",
+      "description": "Context retriever — assembles minimal task-specific context from file summaries, symbols, memory, and prior art.",
+      "permission": { "edit": "allow", "bash": "allow", "read": "allow" }
     },
-    "db": {
+    "worker": {
       "mode": "subagent",
-      "model": "anthropic/claude-sonnet-4-6",
-      "description": "Database & data layer specialist. Handles schema design, migrations, seed scripts, query optimization, and data access layer implementation.",
-      "permission": {
-        "edit": "allow",
-        "bash": "allow",
-        "read": "allow"
-      }
+      "model": "deepseek-zen",
+      "description": "Implementation worker — edits files, generates code, runs build/lint verification. Primary implementation agent.",
+      "permission": { "edit": "allow", "bash": "allow", "read": "allow" }
+    },
+    "reviewer": {
+      "mode": "subagent",
+      "model": "deepseek-zen",
+      "description": "Code reviewer — enforces quality gates, checks architecture compliance, identifies issues. Read-only.",
+      "permission": { "edit": "deny", "bash": "allow", "read": "allow" }
+    },
+    "tester": {
+      "mode": "subagent",
+      "model": "deepseek-zen",
+      "description": "Testing specialist — generates tests, runs test suites, checks coverage.",
+      "permission": { "edit": "allow", "bash": "allow", "read": "allow" }
+    },
+    "security": {
+      "mode": "subagent",
+      "model": "deepseek-v4-pro",
+      "description": "Security auditor — vulnerability scanning, auth validation, secret detection. For auth/DB changes.",
+      "permission": { "edit": "deny", "bash": "allow", "read": "allow" }
+    },
+    "perf": {
+      "mode": "subagent",
+      "model": "deepseek-zen",
+      "description": "Performance auditor — bundle size, query efficiency, render performance review.",
+      "permission": { "edit": "deny", "bash": "allow", "read": "allow" }
+    },
+    "git": {
+      "mode": "subagent",
+      "model": "deepseek-zen",
+      "description": "Git agent — commit message generation, changelog updates, PR descriptions. NEVER commits without user approval.",
+      "permission": { "edit": "allow", "bash": "allow", "read": "allow" }
+    },
+    "memory": {
+      "mode": "subagent",
+      "model": "deepseek-zen",
+      "description": "Memory manager — updates project knowledge, regenerates indexes, records decisions.",
+      "permission": { "edit": "allow", "bash": "allow", "read": "allow" }
+    },
+    "docs": {
+      "mode": "subagent",
+      "model": "deepseek-zen",
+      "description": "Documentation agent — API docs, architecture docs, README updates, JSDoc generation.",
+      "permission": { "edit": "allow", "bash": "allow", "read": "allow" }
+    },
+    "cost": {
+      "mode": "subagent",
+      "model": "deepseek-zen",
+      "description": "Cost optimizer — token usage analysis, context compression, budget enforcement.",
+      "permission": { "edit": "allow", "bash": "allow", "read": "allow" }
+    },
+    "ctx": {
+      "mode": "subagent",
+      "model": "deepseek-zen",
+      "description": "Context manager — maximizes prompt cache hits, manages fingerprints, controls context lifecycle.",
+      "permission": { "edit": "allow", "bash": "allow", "read": "allow" }
     }
   },
 
   "command": {
     "review": {
       "description": "Run a full code review on recent changes. Pass optional scope: 'all', 'stage', or 'files <paths>'",
-      "agent": "advisor",
+      "agent": "reviewer",
       "template": "Review the following code for quality, security, performance, and adherence to project conventions. Focus on: TypeScript strictness, error handling, data validation (Zod), authentication guards, and server/client component boundaries.\n\n$ARGUMENTS"
     },
     "typecheck": {
@@ -77,13 +142,78 @@
     },
     "seed": {
       "description": "Run database seed script",
-      "agent": "db",
+      "agent": "planner",
       "template": "Run the database seed script at lib/db/seed.ts using: npm run db:seed\nIf tsx is not installed, install it first. Verify the seed succeeded by checking the database."
     },
     "migrate": {
       "description": "Generate and apply database migrations",
-      "agent": "db",
+      "agent": "planner",
       "template": "Run drizzle-kit generate to create migration files, then drizzle-kit migrate to apply them. Apply the full-text search migration SQL file separately. Verify the schema is up to date."
+    },
+    "build": {
+      "description": "Full quality cycle: build, lint, and report results",
+      "agent": "worker",
+      "template": "Run the complete quality verification: npm run build and npm run lint. Report any errors found."
+    },
+    "index": {
+      "description": "Rebuild all repository indexes (symbols, dependencies, summaries)",
+      "agent": "memory",
+      "template": "Rebuild all repository indexes: scan all .ts/.tsx files, generate file summaries in .opencode/summaries/files/, build symbol index in .opencode/summaries/symbols.json, and update the dependency graph in .opencode/summaries/deps.json."
+    },
+    "learn": {
+      "description": "Analyze recent changes and update project memory",
+      "agent": "memory",
+      "template": "Analyze the git diff since last session. Update memory files with new patterns, design decisions, API changes, and learning insights. Regenerate file summaries for changed files."
+    },
+    "cost": {
+      "description": "Show current session cost and token usage",
+      "agent": "cost",
+      "template": "Report the current session's token usage breakdown by model, cost estimates, cache hit rate, and budget status."
+    },
+    "resume": {
+      "description": "Force resume from last checkpoint. Continue where you left off.",
+      "agent": "orchestrator",
+      "template": "Resume from the last checkpoint. Read .opencode/state/checkpoint.json and continue the pipeline from where it stopped."
+    },
+    "status": {
+      "description": "Show current state — active goal, subtask progress, token budget, agent status",
+      "agent": "orchestrator",
+      "template": "Show full session status: current goal, subtask progress, token budget remaining, V4 Pro calls used, cache hit rate, agent status board."
+    },
+    "budget": {
+      "description": "Show detailed token ledger and cost breakdown",
+      "agent": "orchestrator",
+      "template": "Read .opencode/state/token-budget.json and report the full token ledger: Zen vs V4 Pro tokens, costs, budget remaining, per-agent breakdown."
+    },
+    "checkpoint": {
+      "description": "Force a checkpoint write immediately — save all progress",
+      "agent": "orchestrator",
+      "template": "Write a checkpoint NOW. Save current state to .opencode/state/checkpoint.json with current goal, subtask progress, git HEAD hash, and files modified."
+    },
+    "abort": {
+      "description": "Halt current goal, save checkpoint, mark as paused. I'll come back later.",
+      "agent": "orchestrator",
+      "template": "Halt the current pipeline. Save a checkpoint with current state. Mark goal as paused. Clean up agent state. Do NOT commit. Do NOT discard work."
+    },
+    "retry-task": {
+      "description": "Retry a failed subtask. Usage: /retry-task <subtask-name>",
+      "agent": "orchestrator",
+      "template": "Retry the subtask: $ARGUMENTS. Reset its state to pending, clear retry counter, re-dispatch it through the pipeline."
+    },
+    "force-v4": {
+      "description": "Override routing — force next agent call to use DeepSeek V4 Pro",
+      "agent": "orchestrator",
+      "template": "Set the override flag: the next agent invocation must use DeepSeek V4 Pro regardless of the router's classification. Justify in logs."
+    },
+    "force-zen": {
+      "description": "Override routing — force next agent call to use DeepSeek Zen only",
+      "agent": "orchestrator",
+      "template": "Set the override flag: the next agent invocation must use DeepSeek Zen regardless of the router's classification."
+    },
+    "health": {
+      "description": "Validate all state files, memory files, cache, and indexes for integrity",
+      "agent": "orchestrator",
+      "template": "Run health check: validate .opencode/state/* files are internally consistent, memory files have valid hashes, cache fingerprints match, indexes are not corrupted. Report any issues."
     }
   },
 
@@ -114,6 +244,6 @@
 
   "compaction": {
     "auto": true,
-    "tail_turns": 15
+    "tail_turns": 20
   }
 }

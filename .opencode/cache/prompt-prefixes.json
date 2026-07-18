@@ -1,0 +1,7 @@
+{
+  "worker-system": null,
+  "reviewer-system": null,
+  "planner-system": null,
+  "router-system": null,
+  "notes": "Prompt prefixes will be hashed on first use. These hashes track which prompt versions are in cache."
+}

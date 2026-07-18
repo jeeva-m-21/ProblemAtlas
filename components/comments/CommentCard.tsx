@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import type { DiscussionComment } from "@/data/mockDiscussions";
+import type { DiscussionComment } from "@/lib/data/comments";
 
 function InitialAvatar({ initials }: { initials: string }) {
   return (

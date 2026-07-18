@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type React from "react";
 
-import { getMockProblemDetail } from "@/data/mockProblemDetails";
+import { getProblemById } from "@/lib/data/problems";
 import { ProblemDetailHeader } from "@/components/problem/ProblemDetailHeader";
 import { ProblemDiscussionPreview } from "@/components/problem/ProblemDiscussionPreview";
 import { ProblemMetadata } from "@/components/problem/ProblemMetadata";
@@ -16,7 +16,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { id: rawId } = await params;
   const id = Number(rawId);
-  const problem = Number.isFinite(id) ? getMockProblemDetail(id) : undefined;
+  const problem = Number.isFinite(id) ? await getProblemById(id) : null;
 
   if (!problem) {
     return {
@@ -68,7 +68,7 @@ export default async function ProblemDetailPage({
   const id = Number(rawId);
   if (!Number.isFinite(id)) notFound();
 
-  const problem = getMockProblemDetail(id);
+  const problem = await getProblemById(id);
   if (!problem) notFound();
 
   return (

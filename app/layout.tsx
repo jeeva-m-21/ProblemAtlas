@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import { AppShell } from "@/components/layout/AppShell";
 import { PageTransition } from "@/components/system/PageTransition";
@@ -35,11 +36,13 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
       <body className="min-h-full bg-background text-foreground">
-        <AppShell>
-          <PageTransition>{children}</PageTransition>
-        </AppShell>
+        <ClerkProvider>
+          <AppShell>
+            <PageTransition>{children}</PageTransition>
+          </AppShell>
 
-        <GlobalCommandBar />
+          <GlobalCommandBar />
+        </ClerkProvider>
       </body>
     </html>
   );

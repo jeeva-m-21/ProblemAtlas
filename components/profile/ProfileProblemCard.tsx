@@ -1,7 +1,7 @@
 import Link from "next/link";
 
-import type { Problem } from "@/data/mockProblems";
-import type { ProfileProblemContribution } from "@/data/mockProfiles";
+import type { Problem } from "@/lib/data/problems";
+import type { ProfileProblemContribution } from "@/lib/data/profiles";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";

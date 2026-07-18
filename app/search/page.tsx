@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 
 import {
-  filterSearchResults,
-  mockSearchResults,
+  searchAll,
   type ActivityLevel,
   type CollaborationStatus,
   type SearchFilters,
   type SearchTabKey,
-} from "@/data/mockSearchResults";
-import type { ImplementationScope, ProblemDomain } from "@/data/mockProblems";
+} from "@/lib/data/search";
+import type { ImplementationScope, ProblemDomain } from "@/lib/data/problems";
 import { GlobalSearchBar } from "@/components/search/GlobalSearchBar";
 import { SearchTabs } from "@/components/search/SearchTabs";
 import { SearchFilters as FiltersPanel } from "@/components/search/SearchFilters";
@@ -90,7 +89,7 @@ function parseSearchParams(raw: RawSearchParams) {
   const collaborationRaw = asString(raw.collaboration).trim();
   const collaboration = collaborationRaw && isCollaboration(collaborationRaw) ? collaborationRaw : undefined;
 
-  const filters: SearchFilters = {
+  const filters = {
     domains,
     feasibility,
     implementationScope,
@@ -109,11 +108,7 @@ export default async function SearchPage({
   const raw = (await searchParams) ?? {};
   const { q, tab, filters } = parseSearchParams(raw);
 
-  const results = filterSearchResults(mockSearchResults, {
-    q,
-    tab,
-    filters,
-  });
+  const results = await searchAll({ q, tab, ...filters });
 
   return (
     <div className="space-y-8">

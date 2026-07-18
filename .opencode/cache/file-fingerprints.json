@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "files": {
+    "app/layout.tsx": "",
+    "app/page.tsx": "",
+    "app/explore/page.tsx": "",
+    "app/problems/[id]/page.tsx": "",
+    "lib/db/schema.ts": "",
+    "lib/db/index.ts": "",
+    "lib/auth/index.ts": ""
+  },
+  "note": "Run index.sh to populate file fingerprints. Hashes will be computed on first use."
+}

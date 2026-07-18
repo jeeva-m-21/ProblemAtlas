@@ -1,0 +1,5 @@
+{
+  "version": "1.0",
+  "last_indexed": "2026-07-11",
+  "notes": "Symbol index will be populated by running the index.sh script. This file maps every exported symbol to its file and line."
+}

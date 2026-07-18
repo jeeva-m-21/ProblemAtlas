@@ -6,7 +6,7 @@ import {
   DEFAULT_DOMAIN_KEYS,
   mockDomains,
   type DomainKey,
-} from "@/data/mockDomains";
+} from "@/lib/data/search";
 import {
   DEFAULT_INTERESTS,
   type InterestKey,

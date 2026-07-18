@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import type { SearchResult, SearchResultType } from "@/data/mockSearchResults";
+import type { SearchResult, SearchResultType } from "@/lib/data/search";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -221,7 +221,7 @@ export function SearchResultCard({ result }: { result: SearchResult }) {
             </p>
           ) : null}
 
-          {result.type === "researcher" ? (
+          {result.type === "researcher" && result.contributions ? (
             <p className="text-xs text-muted-foreground">
               {result.contributions.spaces} spaces · {result.contributions.artifacts} artifacts
             </p>

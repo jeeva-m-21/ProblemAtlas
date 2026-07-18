@@ -2,7 +2,7 @@ import type React from "react";
 
 import { Signal, Users, Layers, FileText } from "lucide-react";
 
-import type { Profile } from "@/data/mockProfiles";
+import type { Profile } from "@/lib/data/profiles";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 

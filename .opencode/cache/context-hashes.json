@@ -1,0 +1,5 @@
+{
+  "stable-prefix": null,
+  "architecture-context": null,
+  "notes": "Context hashes will be populated as context blocks are assembled during sessions."
+}

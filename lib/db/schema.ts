@@ -107,10 +107,6 @@ export const problems = pgTable(
   (table) => ({
     domainIdx: index("idx_problems_domain").on(table.domain),
     statusIdx: index("idx_problems_validation_status").on(table.validationStatus),
-    domainCheck: check(
-      "check_domain_valid",
-      sql`${table.domain} IN ('AI/ML', 'Developer Tools & Software Systems')`
-    ),
     feasibilityCheck: check(
       "check_feasibility_score",
       sql`${table.feasibilityScore} IS NULL OR (${table.feasibilityScore} >= 1 AND ${table.feasibilityScore} <= 5)`

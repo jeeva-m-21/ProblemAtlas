@@ -1,6 +1,6 @@
 import type React from "react";
 
-import type { Profile } from "@/data/mockProfiles";
+import type { Profile } from "@/lib/data/profiles";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";

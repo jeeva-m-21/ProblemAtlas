@@ -1,0 +1,25 @@
+{
+  "session_id": "2026-07-11-001",
+  "completion_type": "initial",
+  "checkpoint_number": 0,
+  "total_budget": {
+    "zen_tokens": 5000,
+    "v4_pro_tokens": 0,
+    "v4_pro_calls_max": 0,
+    "v4_pro_calls_used": 0,
+    "cost_limit": 0.0,
+    "cost_spent": 0.0
+  },
+  "spent": {
+    "zen_tokens": 0,
+    "v4_pro_tokens": 0
+  },
+  "agent_ledger": [],
+  "context_blocks_loaded": [],
+  "cache_hits": 0,
+  "cache_misses": 0,
+  "retries": 0,
+  "escalations": 0,
+  "started_at": null,
+  "updated_at": "2026-07-11T00:00:00Z"
+}

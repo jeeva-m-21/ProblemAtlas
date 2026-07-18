@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import type { ProfileActivityEvent } from "@/data/mockProfiles";
+import type { ProfileActivityEvent } from "@/lib/data/profiles";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";

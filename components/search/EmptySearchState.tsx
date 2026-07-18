@@ -1,7 +1,7 @@
 import Link from "next/link";
 
-import type { SearchFilters, SearchTabKey } from "@/data/mockSearchResults";
-import { SEARCH_DOMAINS } from "@/data/mockSearchResults";
+import type { SearchFiltersInput, SearchTabKey } from "@/lib/data/search";
+import { SEARCH_DOMAINS } from "@/lib/data/search";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
@@ -10,7 +10,7 @@ function baseParams({
   filters,
 }: {
   tab: SearchTabKey;
-  filters: SearchFilters;
+  filters: SearchFiltersInput;
 }) {
   const params = new URLSearchParams();
   if (tab && tab !== "all") params.set("tab", tab);
@@ -29,7 +29,7 @@ function hrefWithQuery({
 }: {
   q: string;
   tab: SearchTabKey;
-  filters: SearchFilters;
+  filters: SearchFiltersInput;
 }) {
   const params = baseParams({ tab, filters });
   if (q) params.set("q", q);
@@ -44,7 +44,7 @@ export function EmptySearchState({
 }: {
   q: string;
   tab: SearchTabKey;
-  filters: SearchFilters;
+  filters: SearchFiltersInput;
 }) {
   const resetHref = "/search";
 

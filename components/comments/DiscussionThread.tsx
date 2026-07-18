@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import type { DiscussionComment, DiscussionThread } from "@/data/mockDiscussions";
+import type { DiscussionComment, DiscussionThread } from "@/lib/data/comments";
 
 import { CommentCard } from "@/components/comments/CommentCard";
 import { DiscussionComposer } from "@/components/comments/DiscussionComposer";

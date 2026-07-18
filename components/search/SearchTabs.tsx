@@ -1,7 +1,7 @@
 import Link from "next/link";
 
-import type { SearchFilters, SearchTabKey } from "@/data/mockSearchResults";
-import { SEARCH_TABS } from "@/data/mockSearchResults";
+import type { SearchFiltersInput, SearchTabKey } from "@/lib/data/search";
+import { SEARCH_TABS } from "@/lib/data/search";
 import { cn } from "@/lib/utils";
 
 function toParams({
@@ -11,7 +11,7 @@ function toParams({
 }: {
   q: string;
   tab: SearchTabKey;
-  filters: SearchFilters;
+  filters: SearchFiltersInput;
 }) {
   const params = new URLSearchParams();
 
@@ -27,7 +27,7 @@ function toParams({
   return params;
 }
 
-function buildHref(next: { q: string; tab: SearchTabKey; filters: SearchFilters }) {
+function buildHref(next: { q: string; tab: SearchTabKey; filters: SearchFiltersInput }) {
   const params = toParams(next);
   const query = params.toString();
   return query ? `/search?${query}` : "/search";
@@ -40,7 +40,7 @@ export function SearchTabs({
 }: {
   q: string;
   tab: SearchTabKey;
-  filters: SearchFilters;
+  filters: SearchFiltersInput;
 }) {
   return (
     <nav

@@ -1,18 +1,18 @@
 import type React from "react";
 import Link from "next/link";
 
+import type { ProblemDomain } from "@/lib/data/problems";
 import type {
-  SearchFilters as SearchFiltersModel,
+  SearchFiltersInput as SearchFiltersModel,
   SearchTabKey,
-} from "@/data/mockSearchResults";
-import type { ProblemDomain } from "@/data/mockProblems";
+} from "@/lib/data/search";
 import {
   ACTIVITY_LEVELS,
   COLLABORATION_STATUSES,
   FEASIBILITY_LEVELS,
   IMPLEMENTATION_SCOPES,
   SEARCH_DOMAINS,
-} from "@/data/mockSearchResults";
+} from "@/lib/data/search";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 

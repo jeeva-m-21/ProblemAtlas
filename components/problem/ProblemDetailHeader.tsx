@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type React from "react";
 
-import type { ProblemDetail } from "@/data/mockProblemDetails";
+import type { ProblemDetail } from "@/lib/data/problems";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 

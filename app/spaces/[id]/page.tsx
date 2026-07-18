@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type React from "react";
 
-import { getMockSolutionSpace } from "@/data/mockSolutionSpaces";
+import { getSpaceById } from "@/lib/data/spaces";
 import { SolutionSpaceHeader } from "@/components/space/SolutionSpaceHeader";
 import { ArtifactCard } from "@/components/space/ArtifactCard";
 import { ContributorPanel } from "@/components/space/ContributorPanel";
@@ -19,7 +19,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { id: rawId } = await params;
   const id = Number(rawId);
-  const space = Number.isFinite(id) ? getMockSolutionSpace(id) : undefined;
+  const space = Number.isFinite(id) ? await getSpaceById(id) : undefined;
 
   if (!space) {
     return { title: "Solution space", description: "Collaborative workspace" };
@@ -110,7 +110,7 @@ export default async function SolutionSpacePage({
   const id = Number(rawId);
   if (!Number.isFinite(id)) notFound();
 
-  const space = getMockSolutionSpace(id);
+  const space = await getSpaceById(id);
   if (!space) notFound();
 
   return (

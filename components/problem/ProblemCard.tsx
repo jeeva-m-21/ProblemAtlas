@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Layers, Signal, Users } from "lucide-react";
 
-import type { Problem } from "@/data/mockProblems";
+import type { Problem } from "@/lib/data/problems";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";

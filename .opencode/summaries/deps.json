@@ -1,0 +1,5 @@
+{
+  "version": "1.0",
+  "last_indexed": "2026-07-11",
+  "notes": "Dependency graph will be populated by running the index.sh script. This file stores the import graph between all modules."
+}

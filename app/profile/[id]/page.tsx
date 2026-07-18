@@ -6,7 +6,8 @@ import { ProfileHeader } from "@/components/profile/ProfileHeader";
 import { ProfileProblemCard } from "@/components/profile/ProfileProblemCard";
 import { ProfileStats } from "@/components/profile/ProfileStats";
 import { ResearchInterests } from "@/components/profile/ResearchInterests";
-import { getMockProblemById, getMockProfile } from "@/data/mockProfiles";
+import { getProfileByClerkId } from "@/lib/data/profiles";
+import { getProblemById } from "@/lib/data/problems";
 import { cn } from "@/lib/utils";
 
 export async function generateMetadata({
@@ -15,7 +16,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const profile = getMockProfile(id);
+  const profile = await getProfileByClerkId(id);
 
   if (!profile) {
     return { title: "Profile", description: "Research identity" };
@@ -61,15 +62,15 @@ export default async function ProfilePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const profile = getMockProfile(id);
+  const profile = await getProfileByClerkId(id);
   if (!profile) notFound();
 
-  const contributed = profile.contributedProblems
-    .map((c) => {
-      const problem = getMockProblemById(c.problemId);
+  const contributed = (await Promise.all(
+    profile.contributedProblems.map(async (c) => {
+      const problem = await getProblemById(c.problemId);
       return problem ? { problem, contribution: c } : undefined;
     })
-    .filter(Boolean);
+  )).filter(Boolean);
 
   return (
     <div className="space-y-10">

@@ -1,11 +1,11 @@
 import type React from "react";
 import { Search, Sparkles } from "lucide-react";
 
-import type { SearchFilters, SearchTabKey } from "@/data/mockSearchResults";
+import type { SearchFiltersInput, SearchTabKey } from "@/lib/data/search";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
-function hiddenInputs(filters: SearchFilters) {
+function hiddenInputs(filters: SearchFiltersInput) {
   const nodes: React.ReactNode[] = [];
 
   for (const domain of filters.domains) {
@@ -69,7 +69,7 @@ export function GlobalSearchBar({
 }: {
   query: string;
   tab: SearchTabKey;
-  filters: SearchFilters;
+  filters: SearchFiltersInput;
   className?: string;
 }) {
   return (

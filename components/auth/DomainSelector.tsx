@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-import type { Domain, DomainKey } from "@/data/mockDomains";
+import type { Domain, DomainKey } from "@/lib/data/search";
 
 function DomainPill({
   domain,

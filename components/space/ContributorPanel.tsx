@@ -1,4 +1,4 @@
-import type { Contributor } from "@/data/mockSolutionSpaces";
+import type { Contributor } from "@/lib/data/spaces";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";

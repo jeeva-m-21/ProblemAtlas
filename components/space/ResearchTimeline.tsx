@@ -1,4 +1,4 @@
-import type { TimelineEvent } from "@/data/mockSolutionSpaces";
+import type { TimelineEvent } from "@/lib/data/spaces";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";

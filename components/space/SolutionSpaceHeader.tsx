@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type React from "react";
 
-import type { SolutionSpace } from "@/data/mockSolutionSpaces";
+import type { SolutionSpaceRecord as SolutionSpace } from "@/lib/data/spaces";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 

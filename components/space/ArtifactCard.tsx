@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type React from "react";
 
-import type { SolutionArtifact } from "@/data/mockSolutionSpaces";
+import type { SolutionArtifact } from "@/lib/data/spaces";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";

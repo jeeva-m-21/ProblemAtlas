@@ -1,4 +1,4 @@
-import type { Profile } from "@/data/mockProfiles";
+import type { Profile } from "@/lib/data/profiles";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 

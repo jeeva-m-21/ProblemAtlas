@@ -1,7 +1,8 @@
 import { Search } from "lucide-react";
 import Link from "next/link";
 
-import { mockProblems, type ProblemDomain } from "@/data/mockProblems";
+import { getProblems, type ProblemDomain } from "@/lib/data/problems";
+import type { ImplementationScope } from "@/lib/data/problems";
 import { ProblemCard } from "@/components/problem/ProblemCard";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -65,7 +66,7 @@ function urgencyScore({
 function needsHelp(problem: {
   interestedCount: number;
   activeSolutionSpacesCount: number;
-  implementationScope: "small" | "medium" | "large";
+  implementationScope: ImplementationScope;
 }) {
   const gap = urgencyScore(problem);
   if (gap >= 3) return true;
@@ -128,19 +129,17 @@ export default async function ExplorePage({
   if (tab !== "all") params.set("tab", tab);
   if (sort !== "signal") params.set("sort", sort);
 
-  const filtered = mockProblems
+  const allProblems = await getProblems({ domain, search: q || undefined });
+
+  const filtered = allProblems
     .filter((p) => {
-      if (domain && p.domain !== domain) return false;
       if (tab === "needs-help" && !needsHelp(p)) return false;
-      if (!q) return true;
-      const haystack = `${p.title} ${p.summary}`.toLowerCase();
-      return haystack.includes(q.toLowerCase());
+      return true;
     })
     .sort((a, b) => {
       if (sort === "impact") return b.interestedCount - a.interestedCount;
       if (sort === "feasibility") return b.feasibilityScore - a.feasibilityScore;
       if (sort === "urgency") return urgencyScore(b) - urgencyScore(a);
-      // signal: demand + collaboration surface
       return (
         b.interestedCount + b.activeSolutionSpacesCount * 10 -
         (a.interestedCount + a.activeSolutionSpacesCount * 10)
@@ -270,7 +269,7 @@ export default async function ExplorePage({
               </div>
 
               <p className="text-xs text-muted-foreground">
-                Showing <span className="font-medium text-foreground/80">{filtered.length}</span> of {mockProblems.length}
+                Showing <span className="font-medium text-foreground/80">{filtered.length}</span> of {allProblems.length}
               </p>
             </div>
           </div>

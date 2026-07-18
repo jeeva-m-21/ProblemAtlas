@@ -1,14 +1,17 @@
-<!-- BEGIN:nextjs-agent-rules -->
-# This is NOT the Next.js you know
-
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
-<!-- END:nextjs-agent-rules -->
-
 # ProblemAtlas — Project Instructions
 
 ## Project Overview
 
 ProblemAtlas is a **Next.js 16** "Problem Intelligence Platform" — a curated web app for discovering real-world problems and forming collaborative solution spaces. Currently in early prototype stage (UI with mock data). We're building toward a full MVP with PostgreSQL, Clerk auth, and real API routes.
+
+## OpenCode Autonomous System
+
+This project uses a **production-grade autonomous coding environment** with 15 specialized AI agents, intelligent model routing, persistent memory, and cache-optimized context. See `docs/opencode/BLUEPRINT.md` for the complete architecture.
+
+### Model Routing
+- **DeepSeek Zen (free):** 85%+ of tasks — file ops, simple edits, test execution, git, context retrieval
+- **DeepSeek V4 Pro (Fireworks):** Complex reasoning only — architecture, debugging, security, algorithm design
+- Router agent classifies every task before execution
 
 ## Architecture Constraints (Never Violate)
 
@@ -64,28 +67,66 @@ Client Components  ← call API routes via fetch(), NEVER import services
 | Validation | Zod v4 |
 | DB Client | `postgres` npm package (serverless pooling) |
 | Icons | Lucide React |
-| Icons | `lucide-react` |
 | Package Manager | npm |
 
 ## Available Agents
 
 Invoke with `@agent-name` in any message:
 
+### Master Controller
 | Agent | Purpose |
 |---|---|
-| `@architect` | System architecture decisions, trade-off analysis, design reviews. Read-only. |
-| `@advisor` | Code quality, security, performance reviews. Read-only. |
-| `@quality` | Writing tests, test infrastructure, coverage. |
-| `@db` | Database schema, migrations, queries, seed data. |
+| `@orchestrator` | **THE BRAIN** — session lifecycle, token governance, checkpoint/resume, agent dispatch, budget enforcement, productivity optimization. ALWAYS invoked first on every session. |
+
+### Primary Agents (DeepSeek Zen — Free)
+| Agent | Purpose |
+|---|---|
+| `@router` | Task classifier and model router. Called by the Orchestrator. |
+| `@planner` | Task decomposition, dependency ordering, step sequencing |
+| `@retriever` | Context assembly, file lookup, symbol resolution |
+| `@worker` | Code implementation, editing, refactoring. Primary agent. |
+| `@reviewer` | Code review, quality gate enforcement, convention checks |
+| `@tester` | Test generation, execution, coverage analysis |
+| `@perf` | Performance review — bundle size, query efficiency |
+| `@git` | Commit messages, changelog, PR descriptions |
+| `@memory` | Knowledge persistence, indexing, learning from sessions |
+| `@docs` | Documentation — API docs, architecture docs, README, JSDoc |
+| `@cost` | Token analysis, budget enforcement, cost tracking |
+| `@ctx` | Cache optimization, context lifecycle, prompt structuring |
+
+### Reasoning Agents (DeepSeek V4 Pro — Fireworks)
+| Agent | Purpose |
+|---|---|
+| `@pm` | Project Manager — goal intake, scope, risks |
+| `@architect` | System architecture, design decisions, trade-offs |
+| `@security` | Security audit — vulnerabilities, auth validation, secrets |
 
 ## Available Commands
 
+### Session Control (Orchestrator)
 | Command | Description |
 |---|---|
-| `/review [scope]` | Run full code review on recent changes |
+| `/resume` | Force resume from last checkpoint |
+| `/status` | Show current goal, subtask progress, token budget |
+| `/budget` | Show detailed token ledger and cost breakdown |
+| `/checkpoint` | Force save all progress now |
+| `/abort` | Halt, save state, mark as paused |
+| `/retry-task <name>` | Retry a failed subtask |
+| `/force-v4` | Override — use V4 Pro for next call |
+| `/force-zen` | Override — use Zen only for next call |
+| `/health` | Validate all state, memory, cache, indexes |
+
+### Task Commands
+| Command | Description |
+|---|---|
+| `/review [scope]` | Full code review on recent changes |
 | `/typecheck` | TypeScript check + lint |
+| `/build` | Full quality cycle: build + lint |
 | `/seed` | Run database seed script |
 | `/migrate` | Generate and apply DB migrations |
+| `/index` | Rebuild all repository indexes |
+| `/learn` | Analyze changes and update project memory |
+| `/cost` | Show current session cost and token usage |
 
 ## Phase Status
 
